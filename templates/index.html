@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>3D BMI Calculator</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #00c6ff,
+                    #0072ff,
+                    #7f00ff,
+                    #00d4ff
+                );
+
+            background-size: 400% 400%;
+
+            animation: backgroundMove 12s ease infinite;
+        }
+
+
+        /* Animated Background */
+
+        @keyframes backgroundMove {
+
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+
+        }
+
+
+        /* Decorative circles */
+
+        .circle {
+            position: absolute;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.15);
+
+            backdrop-filter: blur(5px);
+
+            animation: float 6s ease-in-out infinite;
+        }
+
+
+        .circle1 {
+            width: 180px;
+            height: 180px;
+
+            top: 8%;
+            left: 8%;
+        }
+
+
+        .circle2 {
+            width: 120px;
+            height: 120px;
+
+            bottom: 10%;
+            right: 12%;
+
+            animation-delay: 2s;
+        }
+
+
+        .circle3 {
+            width: 70px;
+            height: 70px;
+
+            top: 20%;
+            right: 20%;
+
+            animation-delay: 1s;
+        }
+
+
+        @keyframes float {
+
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-25px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+
+        }
+
+
+        /* Main Card */
+
+        .container {
+
+            width: 420px;
+
+            padding: 35px;
+
+            position: relative;
+
+            z-index: 10;
+
+            text-align: center;
+
+            border-radius: 25px;
+
+            background:
+                rgba(255, 255, 255, 0.18);
+
+            border:
+                1px solid rgba(255, 255, 255, 0.4);
+
+            backdrop-filter: blur(20px);
+
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.5);
+
+            transition:
+                transform 0.5s,
+                box-shadow 0.5s;
+        }
+
+
+        /* 3D Card Hover */
+
+        .container:hover {
+
+            transform:
+                perspective(1000px)
+                rotateX(5deg)
+                rotateY(-5deg)
+                translateY(-10px);
+
+            box-shadow:
+                0 40px 70px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+
+
+        /* Title */
+
+        h1 {
+
+            color: white;
+
+            font-size: 34px;
+
+            margin-bottom: 8px;
+
+            text-shadow:
+                3px 3px 5px rgba(0, 0, 0, 0.3);
+        }
+
+
+        .subtitle {
+
+            color: #eaffff;
+
+            margin-bottom: 25px;
+
+            font-size: 14px;
+        }
+
+
+        /* BMI Icon */
+
+        .bmi-icon {
+
+            width: 80px;
+            height: 80px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 38px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #ffffff,
+                    #b8f7ff
+                );
+
+            box-shadow:
+                8px 8px 15px rgba(0, 0, 0, 0.25),
+                -5px -5px 12px rgba(255, 255, 255, 0.7);
+
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+
+        @keyframes iconFloat {
+
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* Labels */
+
+        label {
+
+            display: block;
+
+            text-align: left;
+
+            color: white;
+
+            font-weight: bold;
+
+            margin-top: 18px;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* Input */
+
+        input {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            outline: none;
+
+            border-radius: 12px;
+
+            font-size: 16px;
+
+            background: rgba(255, 255, 255, 0.9);
+
+            box-shadow:
+                inset 4px 4px 8px rgba(0, 0, 0, 0.12),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+
+            transition:
+                0.3s;
+        }
+
+
+        input:focus {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 0 0 3px rgba(255, 255, 255, 0.4),
+                0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+
+        /* Button */
+
+        button {
+
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            cursor: pointer;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #ff00cc,
+                    #7b00ff
+                );
+
+            box-shadow:
+                0 8px 0 #4b0099,
+                0 15px 25px rgba(0, 0, 0, 0.3);
+
+            transition:
+                all 0.25s ease;
+        }
+
+
+        /* Button Hover */
+
+        button:hover {
+
+            transform:
+                translateY(-5px)
+                scale(1.03);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #00f2fe,
+                    #4facfe
+                );
+
+            box-shadow:
+                0 12px 0 #0879b5,
+                0 20px 30px rgba(0, 0, 0, 0.35);
+        }
+
+
+        /* Button Click */
+
+        button:active {
+
+            transform:
+                translateY(5px);
+
+            box-shadow:
+                0 3px 0 #0879b5,
+                0 8px 15px rgba(0, 0, 0, 0.25);
+        }
+
+
+        /* Result */
+
+        .result {
+
+            margin-top: 25px;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(255, 255, 255, 0.25);
+
+            color: white;
+
+            box-shadow:
+                inset 0 2px 5px rgba(255, 255, 255, 0.3),
+                0 10px 20px rgba(0, 0, 0, 0.2);
+
+            animation:
+                resultAnimation 0.7s ease;
+        }
+
+
+        @keyframes resultAnimation {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(30px)
+                    scale(0.8);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+
+        .result h2 {
+
+            margin-bottom: 10px;
+
+            font-size: 22px;
+        }
+
+
+        .bmi-number {
+
+            font-size: 35px;
+
+            font-weight: bold;
+
+            margin: 8px;
+        }
+
+
+        .category {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: #ffff8a;
+        }
+
+
+        /* Responsive */
+
+        @media (max-width: 500px) {
+
+            .container {
+
+                width: 90%;
+
+                padding: 25px;
+            }
+
+            h1 {
+
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Background Shapes -->
+
+    <div class="circle circle1"></div>
+
+    <div class="circle circle2"></div>
+
+    <div class="circle circle3"></div>
+
+
+    <!-- Main Calculator -->
+
+    <div class="container">
+
+
+        <div class="bmi-icon">
+            ⚖️
+        </div>
+
+
+        <h1>
+            BMI Calculator
+        </h1>
+
+
+        <p class="subtitle">
+            Check your Body Mass Index
+        </p>
+
+
+        <form method="POST">
+
+
+            <label for="weight">
+                Weight (kg)
+            </label>
+
+            <input
+                type="number"
+                id="weight"
+                name="weight"
+                placeholder="Enter your weight"
+                step="0.1"
+                min="1"
+                required
+            >
+
+
+            <label for="height">
+                Height (cm)
+            </label>
+
+            <input
+                type="number"
+                id="height"
+                name="height"
+                placeholder="Enter your height"
+                step="0.1"
+                min="1"
+                required
+            >
+
+
+            <button type="submit">
+                Calculate BMI
+            </button>
+
+
+        </form>
+
+
+        {% if bmi is not none %}
+
+        <div class="result">
+
+            <h2>
+                Your BMI Result
+            </h2>
+
+            <div class="bmi-number">
+
+                {{ "%.2f"|format(bmi) }}
+
+            </div>
+
+            <div class="category">
+
+                {{ result }}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+
+</body>
+
+</html>
